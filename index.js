@@ -1,24 +1,24 @@
 // server.js
-const express = require('express');
-const connectDB = require('./config/db');
-const dotenv = require('dotenv');
+const express = require('express')
+const connectDB = require('./config/db')
+const cors = require('cors')
+require('dotenv').config()
+const PORT = process.env.PORT || 5000
 
-// Load environment variables
-dotenv.config();
-
-const app = express();
+const app = express()
 
 // Connect Database
-connectDB();
+connectDB()
 
 // Middleware
-app.use(express.json());
+app.use(express.json())
 
-// Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/articles', require('./routes/articles'));
-app.use('/api/subscriptions', require('./routes/subscriptions'));
+app.use(cors())
 
-const PORT = process.env.PORT || 5000;
+app.use('/api', require('./routes/index'))
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to Home Route' })
+})
+
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
